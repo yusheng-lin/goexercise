@@ -80,6 +80,26 @@ paths:
       summary: list users
       tags:
       - user
+    put:
+      parameters:
+      - description: acct
+        in: body
+        name: acct
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: update account
+      tags:
+      - user
   /user/{name}:
     get:
       parameters:

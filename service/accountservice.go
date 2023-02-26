@@ -63,3 +63,18 @@ func (svc *AccountService) DeleteAccount(account string) error {
 
 	return nil
 }
+
+func (svc *AccountService) UpadteAccount(account *models.Account) error {
+	if account.Pwd != "" {
+		account.Pwd = utility.GetHash(account.Pwd)
+	}
+
+	err := svc.repo.UpdateAccount(account)
+
+	if err != nil {
+		log.Error().Err(err)
+		return errors.New("update account fail. please make sure this account exists")
+	}
+
+	return nil
+}

@@ -3,6 +3,7 @@ package db
 import (
 	"goexercise/models"
 	"goexercise/service"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -50,6 +51,24 @@ func (repo *UserRepository) CreateAccount(account *models.Account) error {
 
 func (repo *UserRepository) DeleteAccount(account string) error {
 	err := repo.db.Table("users").Where("acct=?", account).Delete(&models.Account{}).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *UserRepository) UpdateAccount(account *models.Account) error {
+	val := map[string]interface{}{"updated_at": time.Now()}
+
+	if account.Fullname != "" {
+		val["fullname"] = account.Fullname
+	}
+
+	if account.Pwd != "" {
+		val["pwd"] = account.Pwd
+	}
+
+	err := repo.db.Table("users").Where("acct=?", account.Acct).Updates(val).Error
 	if err != nil {
 		return err
 	}

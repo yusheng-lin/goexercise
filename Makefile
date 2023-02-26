@@ -1,7 +1,10 @@
-all: postgres
+all: postgres run
 
 postgres:
 	docker-compose up -d
 
-#remove: 
-#	docker-compose down
+build: 
+	wire .; swag init
+
+run: 
+	go run goexercise
