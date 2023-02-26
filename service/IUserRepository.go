@@ -7,4 +7,5 @@ type IUserRepository interface {
 	GetUser(name string) (*models.User, error)
 	GetAccount(account string) (*models.Account, error)
 	CreateAccount(account *models.Account) error
+	DeleteAccount(account string) error
 }

@@ -52,3 +52,14 @@ func (svc *AccountService) SignUp(account *models.Account) error {
 
 	return nil
 }
+
+func (svc *AccountService) DeleteAccount(account string) error {
+	err := svc.repo.DeleteAccount(account)
+
+	if err != nil {
+		log.Error().Err(err)
+		return errors.New("delete account fail. please make sure this account exists")
+	}
+
+	return nil
+}

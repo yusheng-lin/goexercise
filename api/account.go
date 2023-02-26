@@ -74,3 +74,30 @@ func (controller *AccountController) SignUp(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, models.Response{Msg: "Success"})
 }
+
+// @Summary delete account
+// @Tags user
+// @version 1.0
+// @produce application/json
+// @Security BearerAuth
+// @param acct body string true "acct"
+// @Success 200 string string 成功後返回的值
+// @Router /user [delete]
+func (controller *AccountController) Delete(ctx *gin.Context) {
+	acct := &models.Account{}
+	err := ctx.BindJSON(acct)
+
+	if err != nil || acct.Acct == "" {
+		ctx.JSON(http.StatusOK, models.Response{Msg: "Invalid params"})
+		return
+	}
+
+	err = controller.acctsvc.DeleteAccount(acct.Acct)
+
+	if err != nil {
+		ctx.JSON(http.StatusOK, models.Response{Msg: fmt.Sprint(err)})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, models.Response{Msg: "Success"})
+}

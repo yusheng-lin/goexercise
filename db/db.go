@@ -47,3 +47,11 @@ func (repo *UserRepository) CreateAccount(account *models.Account) error {
 	}
 	return nil
 }
+
+func (repo *UserRepository) DeleteAccount(account string) error {
+	err := repo.db.Table("users").Where("acct=?", account).Delete(&models.Account{}).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}

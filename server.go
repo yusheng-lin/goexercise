@@ -37,6 +37,7 @@ func (server *Server) SetupRouter() {
 	server.router.POST("/api/v1/SignUp", server.accountcontroller.SignUp)
 	server.router.GET("/api/v1/user", server.jwtservice.AuthRequired, server.usercontroller.Users)
 	server.router.GET("/api/v1/user/:name", server.jwtservice.AuthRequired, server.usercontroller.User)
+	server.router.DELETE("/api/v1/user", server.jwtservice.AuthRequired, server.accountcontroller.Delete)
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	server.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }

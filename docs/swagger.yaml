@@ -47,6 +47,26 @@ paths:
       tags:
       - user
   /user:
+    delete:
+      parameters:
+      - description: acct
+        in: body
+        name: acct
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: delete account
+      tags:
+      - user
     get:
       produces:
       - application/json
