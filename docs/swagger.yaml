@@ -1,0 +1,88 @@
+host: localhost:8080
+info:
+  contact: {}
+  description: Gin swagger
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Gin swagger
+  version: "1.0"
+paths:
+  /Login:
+    post:
+      parameters:
+      - description: login
+        in: body
+        name: login
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: uers login
+      tags:
+      - user
+  /SignUp:
+    post:
+      parameters:
+      - description: singup
+        in: body
+        name: singup
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: uers sign up
+      tags:
+      - user
+  /user:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: list users
+      tags:
+      - user
+  /user/{name}:
+    get:
+      parameters:
+      - description: name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: get user by name
+      tags:
+      - user
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
