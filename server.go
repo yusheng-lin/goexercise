@@ -28,8 +28,14 @@ func NewServer(usercontroller *api.UserController, accountcontroller *api.Accoun
 	}
 }
 
-func (server *Server) Run(port int) {
-	server.router.Run(fmt.Sprintf(":%d", port))
+func (server *Server) Run(port int, tls bool) {
+	p := fmt.Sprintf(":%d", port)
+
+	if tls {
+		server.router.RunTLS(p, "./certs/server.crt", "./certs/server.key")
+	} else {
+		server.router.Run(p)
+	}
 }
 
 func (server *Server) SetupRouter() {
