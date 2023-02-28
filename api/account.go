@@ -25,8 +25,8 @@ func NewAccountController(acctsvc *service.AccountService, jwtsvc *service.JWTSe
 // @Tags user
 // @version 1.0
 // @produce application/json
-// @param login body string true "login"
-// @Success 200 string string 成功後返回的值
+// @param login body models.Login true "login"
+// @Success 200 {object} models.Response 成功後返回的值
 // @Router /Login [post]
 func (controller *AccountController) Login(ctx *gin.Context) {
 	var login models.Account
@@ -53,8 +53,8 @@ func (controller *AccountController) Login(ctx *gin.Context) {
 // @Tags user
 // @version 1.0
 // @produce application/json
-// @param singup body string true "singup"
-// @Success 200 string string 成功後返回的值
+// @param singup body models.Account true "singup"
+// @Success 200 {object} models.Response 成功後返回的值
 // @Router /SignUp [post]
 func (controller *AccountController) SignUp(ctx *gin.Context) {
 	singup := &models.Account{}
@@ -80,8 +80,8 @@ func (controller *AccountController) SignUp(ctx *gin.Context) {
 // @version 1.0
 // @produce application/json
 // @Security BearerAuth
-// @param acct body string true "acct"
-// @Success 200 string string 成功後返回的值
+// @param acct body models.DeleteAccount true "acct"
+// @Success 200 {object} models.Response 成功後返回的值
 // @Router /user [delete]
 func (controller *AccountController) Delete(ctx *gin.Context) {
 	acct := &models.Account{}
@@ -107,8 +107,8 @@ func (controller *AccountController) Delete(ctx *gin.Context) {
 // @version 1.0
 // @produce application/json
 // @Security BearerAuth
-// @param acct body string true "acct"
-// @Success 200 string string 成功後返回的值
+// @param acct body models.Account true "acct"
+// @Success 200 {object} models.Response 成功後返回的值
 // @Router /user [put]
 func (controller *AccountController) Update(ctx *gin.Context) {
 	acct := &models.Account{}

@@ -17,8 +17,8 @@ func NewUserService(repo *IUserRepository) *UserService {
 	}
 }
 
-func (svc *UserService) GetUsers() *[]models.User {
-	return svc.repo.GetUsers()
+func (svc *UserService) GetUsers(page *models.Paging) (int64, int64, *[]models.User) {
+	return svc.repo.GetUsers(page)
 }
 
 func (svc *UserService) GetUser(name string) (*models.User, error) {

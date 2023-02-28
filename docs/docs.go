@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Login"
                         }
                     }
                 ],
@@ -43,7 +43,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Response"
                         }
                     }
                 }
@@ -65,7 +65,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Account"
                         }
                     }
                 ],
@@ -73,35 +73,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Response"
                         }
                     }
                 }
             }
         },
         "/user": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "list users",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "put": {
                 "security": [
                     {
@@ -122,7 +100,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Account"
                         }
                     }
                 ],
@@ -130,7 +108,40 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "list users",
+                "parameters": [
+                    {
+                        "description": "page",
+                        "name": "page",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Paging"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
                         }
                     }
                 }
@@ -155,7 +166,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.DeleteAccount"
                         }
                     }
                 ],
@@ -163,7 +174,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Response"
                         }
                     }
                 }
@@ -196,9 +207,110 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Response"
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "enum.Sort": {
+            "type": "integer",
+            "enum": [
+                0,
+                1
+            ],
+            "x-enum-varnames": [
+                "ASC",
+                "Desc"
+            ]
+        },
+        "enum.UserSort": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2
+            ],
+            "x-enum-varnames": [
+                "Account",
+                "Fullname",
+                "CreatedAt"
+            ]
+        },
+        "models.Account": {
+            "type": "object",
+            "properties": {
+                "acct": {
+                    "type": "string"
+                },
+                "fullname": {
+                    "type": "string"
+                },
+                "pwd": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.DeleteAccount": {
+            "type": "object",
+            "properties": {
+                "acct": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Login": {
+            "type": "object",
+            "properties": {
+                "acct": {
+                    "type": "string",
+                    "example": "ben"
+                },
+                "pwd": {
+                    "type": "string",
+                    "example": "pass.123"
+                }
+            }
+        },
+        "models.Paging": {
+            "type": "object",
+            "properties": {
+                "pageno": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "sort": {
+                    "description": "enum: 0 asc, 1 desc",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/enum.Sort"
+                        }
+                    ],
+                    "example": 0
+                },
+                "sortby": {
+                    "description": "enum: 0 account, 1 fullname, 2 created",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/enum.UserSort"
+                        }
+                    ],
+                    "example": 0
+                },
+                "take": {
+                    "type": "integer",
+                    "example": 50
+                }
+            }
+        },
+        "models.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "msg": {
+                    "type": "string"
                 }
             }
         }

@@ -1,3 +1,70 @@
+definitions:
+  enum.Sort:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - ASC
+    - Desc
+  enum.UserSort:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - Account
+    - Fullname
+    - CreatedAt
+  models.Account:
+    properties:
+      acct:
+        type: string
+      fullname:
+        type: string
+      pwd:
+        type: string
+    type: object
+  models.DeleteAccount:
+    properties:
+      acct:
+        type: string
+    type: object
+  models.Login:
+    properties:
+      acct:
+        example: ben
+        type: string
+      pwd:
+        example: pass.123
+        type: string
+    type: object
+  models.Paging:
+    properties:
+      pageno:
+        example: 1
+        type: integer
+      sort:
+        allOf:
+        - $ref: '#/definitions/enum.Sort'
+        description: 'enum: 0 asc, 1 desc'
+        example: 0
+      sortby:
+        allOf:
+        - $ref: '#/definitions/enum.UserSort'
+        description: 'enum: 0 account, 1 fullname, 2 created'
+        example: 0
+      take:
+        example: 50
+        type: integer
+    type: object
+  models.Response:
+    properties:
+      data: {}
+      msg:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -16,14 +83,14 @@ paths:
         name: login
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/models.Login'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/models.Response'
       summary: uers login
       tags:
       - user
@@ -35,14 +102,14 @@ paths:
         name: singup
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/models.Account'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/models.Response'
       summary: uers sign up
       tags:
       - user
@@ -54,27 +121,34 @@ paths:
         name: acct
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/models.DeleteAccount'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/models.Response'
       security:
       - BearerAuth: []
       summary: delete account
       tags:
       - user
-    get:
+    post:
+      parameters:
+      - description: page
+        in: body
+        name: page
+        required: true
+        schema:
+          $ref: '#/definitions/models.Paging'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/models.Response'
       security:
       - BearerAuth: []
       summary: list users
@@ -87,14 +161,14 @@ paths:
         name: acct
         required: true
         schema:
-          type: string
+          $ref: '#/definitions/models.Account'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/models.Response'
       security:
       - BearerAuth: []
       summary: update account
@@ -114,7 +188,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/models.Response'
       security:
       - BearerAuth: []
       summary: get user by name

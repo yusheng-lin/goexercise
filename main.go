@@ -27,6 +27,5 @@ func main() {
 		return
 	}
 	server.SetupRouter()
-	tls := false
-	server.Run(8080, tls)
+	server.Run(8080)
 }

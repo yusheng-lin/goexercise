@@ -3,7 +3,7 @@ package service
 import "goexercise/models"
 
 type IUserRepository interface {
-	GetUsers() *[]models.User
+	GetUsers(*models.Paging) (int64, int64, *[]models.User)
 	GetUser(name string) (*models.User, error)
 	GetAccount(account string) (*models.Account, error)
 	CreateAccount(account *models.Account) error

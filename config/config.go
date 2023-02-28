@@ -6,6 +6,7 @@ type Config struct {
 	JWT_SECRET string `mapstructure:"JWT_SECRET"`
 	JWT_EXPIRE int    `mapstructure:"JWT_EXPIRE"`
 	DB_CONNSTR string `mapstructure:"DB_CONNSTR"`
+	RUN_TLS    bool   `mapstructure:"RUN_TLS"`
 }
 
 func NewConfig(path string) (config *Config, err error) {

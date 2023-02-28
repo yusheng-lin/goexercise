@@ -33,7 +33,7 @@ func initapp() (*Server, func(), error) {
 	accountService := service.NewAccountService(iUserRepository)
 	jwtService := service.NewJWTService(config)
 	accountController := api.NewAccountController(accountService, jwtService)
-	server := NewServer(userController, accountController, jwtService)
+	server := NewServer(userController, accountController, jwtService, config)
 	return server, func() {
 	}, nil
 }

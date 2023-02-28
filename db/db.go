@@ -1,6 +1,7 @@
 package db
 
 import (
+	"fmt"
 	"goexercise/models"
 	"goexercise/service"
 	"time"
@@ -19,10 +20,23 @@ func NewUserRepository(db *gorm.DB) *service.IUserRepository {
 	return &repo
 }
 
-func (repo *UserRepository) GetUsers() *[]models.User {
+func (repo *UserRepository) GetUsers(page *models.Paging) (int64, int64, *[]models.User) {
 	users := &[]models.User{}
-	repo.db.Table("users").Find(users)
-	return users
+	offset := (page.PageNo - 1) * page.Take
+	var rows int64
+	repo.db.Table("users").Count(&rows)
+	pages := rows / int64(page.Take)
+
+	if rows%int64(page.Take) > 0 {
+		pages += 1
+	}
+
+	repo.db.Table("users").
+		Limit(page.Take).
+		Offset(offset).
+		Order(fmt.Sprintf(`%s %s`, page.SortBy, page.Sort)).Find(users)
+
+	return rows, pages, users
 }
 
 func (repo *UserRepository) GetUser(name string) (*models.User, error) {
