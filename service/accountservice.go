@@ -12,9 +12,9 @@ type AccountService struct {
 	repo IUserRepository
 }
 
-func NewAccountService(repo *IUserRepository) *AccountService {
+func NewAccountService(repo IUserRepository) *AccountService {
 	return &AccountService{
-		repo: *repo,
+		repo: repo,
 	}
 }
 
