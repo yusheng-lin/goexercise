@@ -42,7 +42,7 @@ func (controller *UserController) Users(ctx *gin.Context) {
 				TotalPages: pages,
 				PageNo:     page.PageNo,
 				Data:       users,
-				Rows:       len(*users),
+				Rows:       len(users),
 			}})
 }
 

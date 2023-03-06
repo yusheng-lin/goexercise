@@ -20,8 +20,8 @@ func NewUserRepository(db *gorm.DB) service.IUserRepository {
 	return repo
 }
 
-func (repo *UserRepository) GetUsers(page *models.Paging) (int64, int64, *[]models.User) {
-	users := &[]models.User{}
+func (repo *UserRepository) GetUsers(page *models.Paging) (int64, int64, []*models.User) {
+	users := []*models.User{}
 	offset := (page.PageNo - 1) * page.Take
 	var rows int64
 	repo.db.Table("users").Count(&rows)
@@ -34,7 +34,7 @@ func (repo *UserRepository) GetUsers(page *models.Paging) (int64, int64, *[]mode
 	repo.db.Table("users").
 		Limit(page.Take).
 		Offset(offset).
-		Order(fmt.Sprintf(`%s %s`, page.SortBy, page.Sort)).Find(users)
+		Order(fmt.Sprintf(`%s %s`, page.SortBy, page.Sort)).Find(&users)
 
 	return rows, pages, users
 }
