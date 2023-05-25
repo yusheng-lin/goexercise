@@ -13,11 +13,11 @@ type UserRepository struct {
 	db *gorm.DB
 }
 
-func NewUserRepository(db *gorm.DB) *service.IUserRepository {
-	var repo service.IUserRepository = &UserRepository{
+func NewUserRepository(db *gorm.DB) service.IUserRepository {
+
+	return &UserRepository{
 		db: db,
 	}
-	return &repo
 }
 
 func (repo *UserRepository) GetUsers(page *models.Paging) (int64, int64, *[]models.User) {
