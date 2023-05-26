@@ -1,12 +1,14 @@
 all: postgres run
 
 postgres:
-	docker-compose up -d; sleep 5
+	docker-compose -f docker-compose.01.yml up -d; sleep 5
 
-build: 
+build:
+	cd src;\
 	wire .; swag init
 
 run: 
+	cd src;\
 	go run goexercise
 
 down:
