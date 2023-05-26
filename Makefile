@@ -1,7 +1,7 @@
 all: postgres run
 
 postgres:
-	docker-compose -f docker-compose.01.yml up -d; sleep 5
+	docker-compose -f docker-compose.yml up -d; sleep 5
 
 build:
 	cd src;\

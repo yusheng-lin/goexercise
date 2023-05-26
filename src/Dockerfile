@@ -1,15 +1,15 @@
 #build stage
 FROM golang:alpine AS builder
-RUN apk add --no-cache git
-WORKDIR /go/src/app
+WORKDIR /src
+COPY go.mod .
+RUN go mod download
 COPY . .
-RUN go get -d -v ./...
-RUN go build -o /go/bin/app -v ./...
+RUN go build -o /server
 
 #final stage
 FROM alpine:latest
-RUN apk --no-cache add ca-certificates
-COPY --from=builder /go/bin/app /app
-ENTRYPOINT /app
-LABEL Name=goexercise Version=0.0.1
+WORKDIR /web
+COPY --from=builder /server .
+RUN chmod +x server
+CMD ["/web/server"]
 EXPOSE 8080

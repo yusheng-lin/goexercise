@@ -1,10 +1,28 @@
-version: '3.4'
+version: '3.8'
 
 services:
-  goexercise:
-    image: goexercise
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+  postgres:
+    image: postgres:15.2-alpine
+    container_name: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=pass.123
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - backend
+  app:
+    image: yusheng7581/goexercise
+    container_name: goexercise
     ports:
       - 8080:8080
+    depends_on:
+      - postgres
+    volumes:
+      - ./app.env:/web/app.env
+    networks:
+      - backend
+networks:
+  backend:
