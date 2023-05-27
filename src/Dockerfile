@@ -10,6 +10,5 @@ RUN go build -o /server
 FROM alpine:latest
 WORKDIR /web
 COPY --from=builder /server .
-RUN chmod +x server
-CMD ["/web/server"]
+ENTRYPOINT /web/server
 EXPOSE 8080

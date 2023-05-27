@@ -4,6 +4,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/google/wire"
 	"goexercise/api"
 	"goexercise/config"
@@ -16,9 +17,9 @@ import (
 var cf *config.Config
 var orm *gorm.DB
 
-func ConfigProvider() (*config.Config, error) {
+func configProvider() (*config.Config, error) {
 	if cf == nil {
-		c, err := config.NewConfig("./app.env")
+		c, err := config.NewConfig("./env")
 
 		if err != nil {
 			return c, err
@@ -28,9 +29,10 @@ func ConfigProvider() (*config.Config, error) {
 	return cf, nil
 }
 
-func GormProvider(cf *config.Config) (*gorm.DB, error) {
+func gormProvider(cf *config.Config) (*gorm.DB, error) {
 	if orm == nil {
-		o, err := gorm.Open(postgres.Open(cf.DB_CONNSTR), &gorm.Config{})
+		conn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Taipei", cf.POSTGRES_HOST, cf.POSTGRES_USER, cf.POSTGRES_PASSWORD, cf.POSTGRES_DB)
+		o, err := gorm.Open(postgres.Open(conn), &gorm.Config{})
 		if err != nil {
 			return nil, err
 		}
@@ -40,8 +42,8 @@ func GormProvider(cf *config.Config) (*gorm.DB, error) {
 }
 
 var providerSet = wire.NewSet(
-	ConfigProvider,
-	GormProvider,
+	configProvider,
+	gormProvider,
 	db.NewUserRepository,
 	service.NewUserService,
 	service.NewAccountService,
